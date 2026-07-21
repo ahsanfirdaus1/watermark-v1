@@ -1,0 +1,11 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/tooling
+.vscode/
+.idea/
+
+# Local dev-server launch config (used only by the Claude Code sandbox to preview locally)
+.claude/

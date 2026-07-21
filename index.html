@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Watermark — Private, In-Browser Image Watermarking</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>Watermark</h1>
+  <p class="tagline">Everything stays on your device — nothing is uploaded.</p>
+</header>
+
+<main class="app-main">
+
+  <!-- Image strip / drop zone -->
+  <section class="image-strip" id="imageStrip" aria-label="Loaded images">
+    <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Add images">
+      <svg viewBox="0 0 24 24" class="icon-plus" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Add Images</span>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
+    </div>
+    <div class="thumbnails" id="thumbnails"></div>
+  </section>
+
+  <!-- Canvas preview -->
+  <section class="canvas-area" id="canvasArea">
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="previewCanvas"></canvas>
+      <div class="empty-state" id="emptyState">
+        <p>Add an image to get started</p>
+      </div>
+    </div>
+    <div class="progress-overlay" id="progressOverlay" hidden>
+      <div class="progress-box">
+        <p id="progressText">Processing 0 / 0…</p>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Controls panel (bottom sheet on mobile, side panel on desktop) -->
+  <section class="controls-panel" id="controlsPanel">
+    <button class="sheet-handle" id="sheetHandle" aria-expanded="true" aria-controls="controlsBody">
+      <span class="handle-bar"></span>
+      <span class="handle-label">Watermark Settings</span>
+    </button>
+
+    <div class="controls-body" id="controlsBody">
+
+      <div class="control-group">
+        <label class="group-label">Watermark Type</label>
+        <div class="segmented" role="group" aria-label="Watermark mode">
+          <button type="button" class="seg-btn active" data-mode="text">Text</button>
+          <button type="button" class="seg-btn" data-mode="logo">Logo</button>
+          <button type="button" class="seg-btn" data-mode="both">Both</button>
+        </div>
+      </div>
+
+      <div class="control-group" id="textControls">
+        <label class="field-label" for="textInput">Watermark Text</label>
+        <input type="text" id="textInput" placeholder="e.g. CONFIDENTIAL" value="SAMPLE">
+
+        <label class="field-label" for="fontSelect">Font</label>
+        <select id="fontSelect">
+          <option value="Arial, Helvetica, sans-serif">Arial</option>
+          <option value="'Times New Roman', Times, serif">Times New Roman</option>
+          <option value="Georgia, serif">Georgia</option>
+        </select>
+
+        <label class="field-label" for="colorInput">Color</label>
+        <input type="color" id="colorInput" value="#ffffff">
+
+        <label class="field-label" for="textSizeInput">Text Size <span class="value-badge" id="textSizeValue">48</span></label>
+        <input type="range" id="textSizeInput" min="10" max="200" value="48">
+      </div>
+
+      <div class="control-group" id="logoControls" hidden>
+        <label class="field-label" for="logoInput">Logo Image (PNG/JPG)</label>
+        <input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp">
+        <div class="logo-preview" id="logoPreview" hidden><img id="logoPreviewImg" alt="Logo preview"></div>
+
+        <label class="field-label" for="logoSizeInput">Logo Size <span class="value-badge" id="logoSizeValue">25</span>%</label>
+        <input type="range" id="logoSizeInput" min="5" max="100" value="25">
+      </div>
+
+      <div class="control-group">
+        <label class="field-label" for="opacityInput">Opacity <span class="value-badge" id="opacityValue">70</span>%</label>
+        <input type="range" id="opacityInput" min="5" max="100" value="70">
+
+        <label class="field-label" for="rotationInput">Rotation <span class="value-badge" id="rotationValue">0</span>°</label>
+        <input type="range" id="rotationInput" min="-180" max="180" value="0">
+      </div>
+
+      <div class="control-group">
+        <label class="group-label">Position</label>
+        <div class="position-grid" role="group" aria-label="Position presets">
+          <button type="button" class="pos-btn" data-x="0.08" data-y="0.08">↖</button>
+          <button type="button" class="pos-btn" data-x="0.5" data-y="0.08">↑</button>
+          <button type="button" class="pos-btn" data-x="0.92" data-y="0.08">↗</button>
+          <button type="button" class="pos-btn" data-x="0.08" data-y="0.5">←</button>
+          <button type="button" class="pos-btn active" data-x="0.5" data-y="0.5">•</button>
+          <button type="button" class="pos-btn" data-x="0.92" data-y="0.5">→</button>
+          <button type="button" class="pos-btn" data-x="0.08" data-y="0.92">↙</button>
+          <button type="button" class="pos-btn" data-x="0.5" data-y="0.92">↓</button>
+          <button type="button" class="pos-btn" data-x="0.92" data-y="0.92">↘</button>
+        </div>
+        <p class="hint-text">Or drag the watermark directly on the preview.</p>
+      </div>
+
+      <div class="control-group action-row">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        <button type="button" class="btn btn-secondary" id="applyAllBtn">Apply to All</button>
+      </div>
+
+      <div class="control-group action-row">
+        <button type="button" class="btn btn-primary" id="downloadBtn">Download Image</button>
+        <button type="button" class="btn btn-primary" id="downloadAllBtn">Download All (.zip)</button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script src="lib/jszip.min.js"></script>
+<script src="js/state.js"></script>
+<script src="js/imageLoader.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/dragController.js"></script>
+<script src="js/controlsUI.js"></script>
+<script src="js/batch.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
