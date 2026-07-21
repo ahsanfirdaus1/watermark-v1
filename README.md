@@ -2,7 +2,7 @@
 
 A personal, single-page web app for watermarking images — entirely in your browser. Nothing is ever uploaded to a server.
 
-**[Live Demo](#)** <!-- update after deploying to GitHub Pages -->
+**[Live Demo](https://ahsanfirdaus1.github.io/watermark-v1/)** 
 
 ## Why
 
