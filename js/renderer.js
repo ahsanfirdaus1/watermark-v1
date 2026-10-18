@@ -50,12 +50,16 @@ window.WM = window.WM || {};
     ctx.restore();
   }
 
-  WM.renderImageToCanvas = function renderImageToCanvas(canvas, imageEntry, logoImage) {
-    canvas.width = imageEntry.width;
-    canvas.height = imageEntry.height;
+  WM.renderImageToCanvas = function renderImageToCanvas(canvas, imageEntry, logoImage, source) {
+    const image = source || imageEntry.preview;
+    if (!image) return canvas;
+    if (!source && (canvas.width !== image.width || canvas.height !== image.height)) {
+      canvas.width = image.width;
+      canvas.height = image.height;
+    }
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imageEntry.canvas, 0, 0);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     drawWatermark(ctx, canvas, imageEntry.watermark, logoImage);
     return canvas;
   };

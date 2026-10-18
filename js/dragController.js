@@ -28,6 +28,7 @@ WM.initDragController = function initDragController({ canvas, getActiveWatermark
     const { x, y } = clientToFraction(e.clientX, e.clientY);
     wm.position.x = x;
     wm.position.y = y;
+    canvas.focus({ preventScroll: true });
     onPositionChange();
     try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
   });
@@ -51,6 +52,14 @@ WM.initDragController = function initDragController({ canvas, getActiveWatermark
   canvas.addEventListener('pointerup', endDrag);
   canvas.addEventListener('pointercancel', endDrag);
 
+  canvas.addEventListener('keydown', (e) => {
+    const wm = getActiveWatermark(); if (!wm) return;
+    const step = e.shiftKey ? 0.05 : 0.01;
+    const delta = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+    if (!delta) return;
+    e.preventDefault(); wm.position.x = Math.min(1, Math.max(0, wm.position.x + delta[0])); wm.position.y = Math.min(1, Math.max(0, wm.position.y + delta[1])); onPositionChange();
+  });
+
   // Preset position grid
   posButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -60,6 +69,7 @@ WM.initDragController = function initDragController({ canvas, getActiveWatermark
       wm.position.y = parseFloat(btn.dataset.y);
       clearPresetActive();
       btn.classList.add('active');
+      posButtons.forEach(item => item.setAttribute('aria-pressed', String(item === btn)));
       onPositionChange();
     });
   });

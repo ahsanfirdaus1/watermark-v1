@@ -4,8 +4,8 @@ function loadImageFromFile(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
-    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-    img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+    img.onload = () => resolve({ image: img, url });
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('decode')); };
     img.src = url;
   });
 }
@@ -35,6 +35,8 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
     resetBtn: document.getElementById('resetBtn'),
     sheetHandle: document.getElementById('sheetHandle'),
     controlsPanel: document.getElementById('controlsPanel'),
+    positionX: document.getElementById('positionX'),
+    positionY: document.getElementById('positionY'),
   };
 
   function wm() {
@@ -47,6 +49,7 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
     const w = wm();
     if (!w) return;
     els.seg.forEach(b => b.classList.toggle('active', b.dataset.mode === w.mode));
+    els.seg.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === w.mode)));
     els.textControls.hidden = w.mode === 'logo';
     els.logoControls.hidden = w.mode === 'text';
 
@@ -57,12 +60,14 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
     els.textSizeValue.textContent = w.text.size;
 
     els.logoSizeInput.value = w.logo.sizePct;
-    els.logoSizeValue.textContent = w.logo.sizePct;
+    els.logoSizeValue.textContent = w.logo.sizePct + '%';
 
     els.opacityInput.value = w.opacity;
-    els.opacityValue.textContent = w.opacity;
+    els.opacityValue.textContent = w.opacity + '%';
     els.rotationInput.value = w.rotation;
-    els.rotationValue.textContent = w.rotation;
+    els.rotationValue.textContent = w.rotation + '°';
+    els.positionX.value = Math.round(w.position.x * 100);
+    els.positionY.value = Math.round(w.position.y * 100);
   }
 
   els.seg.forEach(btn => {
@@ -72,6 +77,7 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
       w.mode = btn.dataset.mode;
       els.seg.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      els.seg.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
       els.textControls.hidden = w.mode === 'logo';
       els.logoControls.hidden = w.mode === 'text';
       onChange();
@@ -103,36 +109,55 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
   els.logoInput.addEventListener('change', async () => {
     const file = els.logoInput.files[0];
     if (!file) return;
+    let loaded = null;
     try {
-      const img = await loadImageFromFile(file);
+      if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 8 * 1024 * 1024) throw new Error('logoTooLarge');
+      loaded = await loadImageFromFile(file); const img = loaded.image;
+      if (img.naturalWidth * img.naturalHeight > 4_000_000) throw new Error('logoTooLarge');
+      if (state.logoUrl) URL.revokeObjectURL(state.logoUrl);
       state.logoImage = img;
       state.logoFile = file;
+      state.logoUrl = loaded.url;
       els.logoPreview.hidden = false;
       els.logoPreviewImg.src = img.src;
+      document.getElementById('exportMessage').textContent = '';
       onChange();
     } catch (err) {
-      console.error('Failed to load logo', err);
+      if (loaded) URL.revokeObjectURL(loaded.url);
+      document.getElementById('exportMessage').textContent = WM.t(err.message === 'logoTooLarge' ? 'logoTooLarge' : 'logoFailed');
     }
+    els.logoInput.value = '';
+  });
+  document.getElementById('removeLogoBtn').addEventListener('click', () => {
+    if (state.logoUrl) URL.revokeObjectURL(state.logoUrl);
+    state.logoUrl = null; state.logoImage = null; state.logoFile = null;
+    els.logoPreview.hidden = true; els.logoPreviewImg.removeAttribute('src'); onChange();
   });
   els.logoSizeInput.addEventListener('input', () => {
     const w = wm(); if (!w) return;
     w.logo.sizePct = parseFloat(els.logoSizeInput.value);
-    els.logoSizeValue.textContent = w.logo.sizePct;
+    els.logoSizeValue.textContent = w.logo.sizePct + '%';
     onChange();
   });
 
   els.opacityInput.addEventListener('input', () => {
     const w = wm(); if (!w) return;
     w.opacity = parseFloat(els.opacityInput.value);
-    els.opacityValue.textContent = w.opacity;
+    els.opacityValue.textContent = w.opacity + '%';
     onChange();
   });
   els.rotationInput.addEventListener('input', () => {
     const w = wm(); if (!w) return;
     w.rotation = parseFloat(els.rotationInput.value);
-    els.rotationValue.textContent = w.rotation;
+    els.rotationValue.textContent = w.rotation + '°';
     onChange();
   });
+
+  [els.positionX, els.positionY].forEach((input, index) => input.addEventListener('change', () => {
+    const w = wm(); if (!w) return;
+    w.position[index ? 'y' : 'x'] = Math.min(100, Math.max(0, Number(input.value) || 0)) / 100;
+    input.value = Math.round(w.position[index ? 'y' : 'x'] * 100); onChange();
+  }));
 
   els.resetBtn.addEventListener('click', () => {
     const active = getActiveImage();
@@ -144,9 +169,14 @@ WM.initControlsUI = function initControlsUI({ onChange, clearPresetActive }) {
   });
 
   // Bottom-sheet collapse toggle (mobile only — hidden via CSS on desktop)
-  els.sheetHandle.addEventListener('click', () => {
+  els.sheetHandle?.addEventListener('click', () => {
     const collapsed = els.controlsPanel.classList.toggle('collapsed');
     els.sheetHandle.setAttribute('aria-expanded', String(!collapsed));
+  });
+
+  document.getElementById('languageSelect').addEventListener('change', event => {
+    state.locale = event.target.value === 'en' ? 'en' : 'id';
+    WM.refreshLanguage(); syncFormFromState(); onChange();
   });
 
   return { syncFormFromState };

@@ -1,77 +1,49 @@
 # Watermark
 
-A personal, single-page web app for watermarking images — entirely in your browser. Nothing is ever uploaded to a server.
+Editor watermark statis untuk foto dan hasil pindai dokumen. File dipilih dan diproses di browser; aplikasi tidak mengunggah gambar ke layanan pemrosesan.
 
-**[Live Demo](https://ahsanfirdaus1.github.io/watermark-v1/)** 
+**[Buka aplikasi](https://ahsanfirdaus1.github.io/watermark-v1/)**
 
-## Why
+## Cara pakai
 
-Add a text and/or logo watermark to one or more images (scanned documents, photos, etc.) before sharing them, without trusting a third-party service with the files. All processing happens client-side using the HTML5 Canvas API — you can disconnect your internet after the page loads and the app keeps working.
+1. Pilih hingga 10 gambar PNG, JPG, atau WebP.
+2. Atur teks atau logo, lalu geser watermark atau gunakan tombol posisi dan panah keyboard.
+3. Pilih ukuran hemat (maksimal 2.000 px pada sisi terpanjang) atau ukuran asli, lalu siapkan hasil.
+4. Simpan satu PNG atau ZIP untuk beberapa gambar.
 
-## Features
+Semua tombol dapat digunakan dengan keyboard. Bahasa Indonesia menjadi pilihan awal; pilihan Indonesia/Inggris hanya berlaku selama halaman terbuka.
 
-- **Text watermark** — custom text, font (Arial / Times New Roman / Georgia), color, size, opacity, rotation
-- **Logo watermark** — upload a PNG/JPG (transparent PNG recommended) to use instead of, or alongside, text
-- **Positioning** — 9-position preset grid, or free-drag anywhere on the image (mouse, touch, and pen supported)
-- **Batch processing** — load multiple images, apply the same watermark settings to all of them in one click, then nudge individual images afterward if needed
-- **Export** — download the current image, or download all as a `.zip`
-- **Auto-downscaling** — large photos (20MP+) are automatically capped at 2000px on their longest side for smooth canvas performance
-- **Mobile-first** — bottom-sheet controls on small screens, a full side panel on desktop, touch-friendly targets throughout
+## Batas perangkat
 
-## Privacy
+- Maksimal 20 MiB per gambar dan 80 MiB total; paling banyak 10 gambar.
+- Dimensi gambar dibatasi hingga 24 MP dan 8.192 px per sisi.
+- Logo dibatasi hingga 8 MiB dan 4 MP.
+- Hasil PNG dibatasi hingga 64 MiB per pekerjaan. Pilihan ukuran asli memakai lebih banyak memori dan dapat gagal pada perangkat dengan RAM terbatas.
 
-- Zero network calls involving your images, at any point — verify it yourself by loading the page, then disconnecting your internet.
-- No accounts, no analytics, no tracking, no `localStorage`/`sessionStorage`.
-- Every session starts clean — nothing is saved or remembered between visits.
-- The only third-party code is [JSZip](https://stuk.github.io/jszip/) (MIT licensed), vendored locally in `lib/` — it's never fetched from a CDN at runtime.
+## Privasi dan keamanan
 
-## Usage
+Pemrosesan berlangsung di browser, tanpa akun, analitik, penyimpanan lokal, atau permintaan jaringan dari aplikasi. Hasil diekspor sebagai PNG sehingga metadata sumber seperti EXIF tidak disalin. GitHub Pages tetap menerima koneksi pengunjung dan dapat mencatat alamat IP untuk operasi dan keamanan hosting. Untuk dokumen yang sangat sensitif, pengguna dapat memutus jaringan setelah aplikasi selesai dimuat.
 
-Just open [`index.html`](index.html) in a modern browser — no server, no build step, no install required.
+Halaman memasang kebijakan CSP berbasis meta dan hanya memuat skrip lokal. GitHub Pages tidak menyediakan konfigurasi header HTTP khusus untuk proyek ini, jadi kebijakan tersebut tidak menggantikan header keamanan yang biasanya dikonfigurasi oleh server sendiri.
 
-1. Add one or more images (drag-and-drop, or tap to browse).
-2. Choose text and/or logo watermark, and style it (font, color, size, opacity, rotation).
-3. Position it using the preset grid or by dragging it on the preview.
-4. For multiple images, click **Apply to All**, then optionally select any thumbnail to nudge its position individually.
-5. Click **Download Image** for the current image, or **Download All (.zip)** for everything.
+## Pengembangan
 
-## Tech Stack
+Tidak ada build step atau framework. Buka `index.html` di browser modern atau sajikan folder ini sebagai situs statis. JSZip tersedia sebagai salinan lokal di `lib/jszip.min.js`.
 
-Plain HTML, CSS, and vanilla JavaScript — no framework, no bundler, no build pipeline. Chosen deliberately so the project can be served as-is from GitHub Pages with no CI step and no dependency drift.
+File utama:
 
-- **Rendering:** HTML5 Canvas API
-- **Image input:** File API (drag-and-drop + file picker)
-- **Export:** `canvas.toBlob()` + [JSZip](https://stuk.github.io/jszip/) for batch `.zip` downloads
-- **Browser support:** modern evergreen browsers (Chrome, Safari, Firefox, Edge) — desktop and mobile
+- `index.html` — struktur dan kebijakan halaman
+- `css/styles.css` — layout mobile-first dan tema
+- `js/state.js` — state sesi dan teks UI dua bahasa
+- `js/imageLoader.js` — validasi, dekode, pratinjau, dan batch gambar
+- `js/renderer.js` — komposisi canvas
+- `js/dragController.js` dan `js/controlsUI.js` — interaksi editor
+- `js/batch.js` — PNG dan ZIP
+- `js/main.js` — penghubung aplikasi
 
-## Project Structure
+## Referensi
 
-```
-index.html              Markup and layout
-css/styles.css          Mobile-first responsive styles
-js/state.js             Shared app state (images, watermark settings)
-js/imageLoader.js       Drag-drop / file picker, downscaling, thumbnails
-js/renderer.js          Canvas compositing (base image + watermark)
-js/dragController.js    Free-drag positioning + 9-position preset grid
-js/controlsUI.js        Wiring for all form controls
-js/batch.js             Apply-to-all, single/zip export
-js/main.js              Entry point — wires everything together
-lib/jszip.min.js        Vendored JSZip (MIT licensed)
-PRD/                    Product requirements document
-```
-
-All JavaScript files are loaded as classic `<script>` tags sharing a `window.WM` namespace (not ES modules) so the app also works when `index.html` is opened directly via `file://`, not just when served over HTTP.
-
-## Deployment
-
-This is a static site — deploy it anywhere that serves static files. For GitHub Pages:
-
-1. Push this repo to GitHub.
-2. In the repo, go to **Settings → Pages**.
-3. Under **Build and deployment**, set **Source** to "Deploy from a branch".
-4. Choose your default branch and the `/ (root)` folder, then save.
-5. Your site will be live at `https://<username>.github.io/<repo-name>/`.
-
-## License
-
-Personal project. The reference tool this builds on ([watermarkktp.com](https://watermarkktp.com)) is MIT licensed; JSZip (bundled in `lib/`) is MIT licensed.
+- [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
+- [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+- [Canvas `toBlob()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
+- [JSZip](https://stuk.github.io/jszip/)
