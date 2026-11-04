@@ -1,0 +1,1200 @@
+{
+  "date": "2026-10-19",
+  "timezone": "Asia/Jakarta",
+  "tests": [
+    {
+      "id": "F01-empty-actions-disabled",
+      "status": "PASS",
+      "evidence": {
+        "buttons": "single + all disabled"
+      }
+    },
+    {
+      "id": "F21-mode-hides-irrelevant-controls",
+      "status": "FAIL",
+      "evidence": {
+        "mode": "text",
+        "logoHidden": true,
+        "logoDisplay": "flex"
+      }
+    },
+    {
+      "id": "F02-formats-orientation",
+      "status": "PASS",
+      "evidence": [
+        {
+          "name": "portrait.png",
+          "width": 900,
+          "height": 1200
+        },
+        {
+          "name": "landscape.jpg",
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "name": "transparent.png",
+          "width": 500,
+          "height": 500
+        },
+        {
+          "name": "small.webp",
+          "width": 400,
+          "height": 300
+        }
+      ]
+    },
+    {
+      "id": "F03-text-controls-presets",
+      "status": "PASS",
+      "evidence": {
+        "mode": "text",
+        "text": {
+          "content": "KHUSUS UJI - 19/10/2026",
+          "font": "Arial, Helvetica, sans-serif",
+          "color": "#ffffff",
+          "size": 48
+        },
+        "logo": {
+          "img": null,
+          "sizePct": 25
+        },
+        "opacity": 45,
+        "rotation": -30,
+        "position": {
+          "x": 0.92,
+          "y": 0.92
+        }
+      }
+    },
+    {
+      "id": "F04-apply-all",
+      "status": "PASS",
+      "evidence": {
+        "count": 4
+      }
+    },
+    {
+      "id": "F05-independent-image-settings",
+      "status": "PASS",
+      "evidence": {
+        "independent": true
+      }
+    },
+    {
+      "id": "F06-reset",
+      "status": "PASS",
+      "evidence": {
+        "text": "SAMPLE",
+        "position": "center"
+      }
+    },
+    {
+      "id": "A01-selected-position-reflects-state",
+      "status": "FAIL",
+      "evidence": {
+        "activePresetButtonsAfterReset": 0
+      }
+    },
+    {
+      "id": "F07-touch-position",
+      "status": "PASS",
+      "evidence": {
+        "x": 0.25,
+        "y": 0.3999999872131657
+      }
+    },
+    {
+      "id": "F08-logo-preview",
+      "status": "FAIL",
+      "evidence": {
+        "rendererImageReady": true,
+        "previewReady": false,
+        "previewHidden": false
+      }
+    },
+    {
+      "id": "F09-mouse-drag",
+      "status": "PASS",
+      "evidence": {
+        "x": 0.6,
+        "y": 0.7
+      }
+    },
+    {
+      "id": "F10-single-export",
+      "status": "PASS",
+      "evidence": {
+        "filename": "portrait-watermarked.png"
+      }
+    },
+    {
+      "id": "F11-normal-batch-export",
+      "status": "PASS",
+      "evidence": {
+        "file": "batch-normal.zip",
+        "inputCount": 4,
+        "bytes": 124593
+      }
+    },
+    {
+      "id": "F12-duplicate-basename-retains-all",
+      "status": "FAIL",
+      "evidence": {
+        "inputCount": 2,
+        "zipNames": [
+          "duplicate-watermarked.png"
+        ],
+        "actualArchive": "batch-duplicates.zip"
+      }
+    },
+    {
+      "id": "F13-original-resolution-retained",
+      "status": "FAIL",
+      "evidence": {
+        "source": [
+          6000,
+          4000
+        ],
+        "actual": {
+          "width": 2000,
+          "height": 1333
+        },
+        "warningVisible": false
+      }
+    },
+    {
+      "id": "P01-render-timing-desktop",
+      "status": "OBSERVATION",
+      "evidence": {
+        "samples": 30,
+        "minMs": 0,
+        "maxMs": 0.3000000002793968,
+        "meanMs": 0.016666666666666666
+      }
+    },
+    {
+      "id": "F14-transparency",
+      "status": "PASS",
+      "evidence": {
+        "cornerAlpha": 0
+      }
+    },
+    {
+      "id": "S01-exif-orientation",
+      "status": "OBSERVATION",
+      "evidence": {
+        "width": 600,
+        "height": 800
+      }
+    },
+    {
+      "id": "F15-corrupt-file-user-feedback",
+      "status": "FAIL",
+      "evidence": {
+        "images": 0,
+        "alerts": 0,
+        "body": false
+      }
+    },
+    {
+      "id": "S02-format-allowlist",
+      "status": "FAIL",
+      "evidence": {
+        "acceptedNames": [
+          "unsupported.svg"
+        ],
+        "note": "SVG is a local static fixture; not an XSS exploit"
+      }
+    },
+    {
+      "id": "F16-tiny-image",
+      "status": "PASS",
+      "evidence": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    {
+      "id": "F17-ten-images-loaded",
+      "status": "PASS",
+      "evidence": {
+        "images": 10,
+        "archive": "batch-ten.zip",
+        "note": "all names identical intentionally; archive count checked by Python"
+      }
+    },
+    {
+      "id": "A02-keyboard-image-selection",
+      "status": "FAIL",
+      "evidence": {
+        "thumbTags": [
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          },
+          {
+            "tag": "DIV",
+            "tabIndex": -1,
+            "role": null
+          }
+        ],
+        "canvasTabIndex": -1,
+        "selectedModes": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "A03-selected-mode-programmatic",
+      "status": "FAIL",
+      "evidence": {
+        "ariaPressed": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "A04-remove-target-24px",
+      "status": "FAIL",
+      "evidence": {
+        "width": 20,
+        "height": 20,
+        "designTarget": 44,
+        "note": "WCAG 2.2 AA 24px or spacing exception; direct 20px overlay sits inside thumbnail action"
+      }
+    },
+    {
+      "id": "F18-remove-image",
+      "status": "PASS",
+      "evidence": {
+        "remaining": 9
+      }
+    },
+    {
+      "id": "S03-user-text-not-html",
+      "status": "PASS",
+      "evidence": {
+        "renderPath": "Canvas.fillText; no user HTML element created"
+      }
+    },
+    {
+      "id": "S04-no-app-persistence",
+      "status": "PASS",
+      "evidence": {
+        "cookies": [],
+        "origins": []
+      }
+    },
+    {
+      "id": "S05-edit-export-offline",
+      "status": "PASS",
+      "evidence": {
+        "requests": [],
+        "export": "offline.png"
+      }
+    },
+    {
+      "id": "F19-null-encoder-user-feedback",
+      "status": "FAIL",
+      "evidence": {
+        "rejected": true,
+        "message": "Failed to execute 'createObjectURL' on 'URL': Overload resolution failed.",
+        "alerts": 0
+      }
+    },
+    {
+      "id": "F20-zip-failure-visible",
+      "status": "FAIL",
+      "evidence": {
+        "fallbackDownloads": 9,
+        "alerts": 0
+      }
+    },
+    {
+      "id": "F22-export-snapshot-survives-list-mutation",
+      "status": "FAIL",
+      "evidence": {
+        "completed": false,
+        "error": "Cannot read properties of undefined (reading 'width')"
+      }
+    },
+    {
+      "id": "A11-native-range-keyboard",
+      "status": "PASS",
+      "evidence": {
+        "before": "70",
+        "after": "69"
+      }
+    },
+    {
+      "id": "U01-reflow-320",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 320,
+        "scrollWidth": 320,
+        "controlsHeight": 379.796875,
+        "controlsClientHeight": 342,
+        "controlsScrollHeight": 1112,
+        "downloadRect": {
+          "x": 16,
+          "y": 1550.1875,
+          "width": 139,
+          "height": 44,
+          "top": 1550.1875,
+          "right": 155,
+          "bottom": 1594.1875,
+          "left": 16
+        },
+        "controlsRect": {
+          "x": 0,
+          "y": 502.203125,
+          "width": 320,
+          "height": 341.796875,
+          "top": 502.203125,
+          "right": 320,
+          "bottom": 844,
+          "left": 0
+        }
+      }
+    },
+    {
+      "id": "U01-reflow-375",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 375,
+        "scrollWidth": 375,
+        "controlsHeight": 379.796875,
+        "controlsClientHeight": 342,
+        "controlsScrollHeight": 1112,
+        "downloadRect": {
+          "x": 16,
+          "y": 1550.1875,
+          "width": 166.5,
+          "height": 44,
+          "top": 1550.1875,
+          "right": 182.5,
+          "bottom": 1594.1875,
+          "left": 16
+        },
+        "controlsRect": {
+          "x": 0,
+          "y": 502.203125,
+          "width": 375,
+          "height": 341.796875,
+          "top": 502.203125,
+          "right": 375,
+          "bottom": 844,
+          "left": 0
+        }
+      }
+    },
+    {
+      "id": "U01-reflow-390",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 390,
+        "scrollWidth": 390,
+        "controlsHeight": 379.796875,
+        "controlsClientHeight": 342,
+        "controlsScrollHeight": 1112,
+        "downloadRect": {
+          "x": 16,
+          "y": 1550.1875,
+          "width": 174,
+          "height": 44,
+          "top": 1550.1875,
+          "right": 190,
+          "bottom": 1594.1875,
+          "left": 16
+        },
+        "controlsRect": {
+          "x": 0,
+          "y": 502.203125,
+          "width": 390,
+          "height": 341.796875,
+          "top": 502.203125,
+          "right": 390,
+          "bottom": 844,
+          "left": 0
+        }
+      }
+    },
+    {
+      "id": "U01-reflow-768",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 768,
+        "scrollWidth": 768,
+        "controlsHeight": 379.796875,
+        "controlsClientHeight": 342,
+        "controlsScrollHeight": 1116,
+        "downloadRect": {
+          "x": 24,
+          "y": 1550.1875,
+          "width": 355,
+          "height": 44,
+          "top": 1550.1875,
+          "right": 379,
+          "bottom": 1594.1875,
+          "left": 24
+        },
+        "controlsRect": {
+          "x": 0,
+          "y": 502.203125,
+          "width": 768,
+          "height": 341.796875,
+          "top": 502.203125,
+          "right": 768,
+          "bottom": 844,
+          "left": 0
+        }
+      }
+    },
+    {
+      "id": "U01-reflow-1280",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 1280,
+        "scrollWidth": 1280,
+        "controlsHeight": 768,
+        "controlsClientHeight": 768,
+        "controlsScrollHeight": 1116,
+        "downloadRect": {
+          "x": 965,
+          "y": 1123.984375,
+          "width": 140.5,
+          "height": 44,
+          "top": 1123.984375,
+          "right": 1105.5,
+          "bottom": 1167.984375,
+          "left": 965
+        },
+        "controlsRect": {
+          "x": 941,
+          "y": 76,
+          "width": 339,
+          "height": 768,
+          "top": 76,
+          "right": 1280,
+          "bottom": 844,
+          "left": 941
+        }
+      }
+    },
+    {
+      "id": "A05-zoom-allowed",
+      "status": "FAIL",
+      "evidence": {
+        "viewport": "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      }
+    },
+    {
+      "id": "A06-text-resize-simulation",
+      "status": "OBSERVATION",
+      "evidence": {
+        "scrollWidth": 390,
+        "width": 390
+      }
+    },
+    {
+      "id": "B02-file-url-load",
+      "status": "PASS",
+      "evidence": {
+        "protocol": "file:"
+      }
+    },
+    {
+      "id": "B01-WebKit-smoke",
+      "status": "PASS",
+      "evidence": {
+        "dims": {
+          "w": 900,
+          "h": 1200
+        },
+        "filename": "portrait-watermarked.png"
+      }
+    },
+    {
+      "id": "B01-Edge-smoke",
+      "status": "UNVERIFIED",
+      "evidence": {
+        "error": "browserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features"
+      }
+    },
+    {
+      "id": "A07-dark-primary",
+      "status": "FAIL",
+      "evidence": {
+        "foreground": "#ffffff",
+        "background": "#4f8cff",
+        "ratio": 3.22,
+        "required": 4.5
+      }
+    },
+    {
+      "id": "A08-light-primary",
+      "status": "PASS",
+      "evidence": {
+        "foreground": "#ffffff",
+        "background": "#2f6fed",
+        "ratio": 4.55,
+        "required": 4.5
+      }
+    },
+    {
+      "id": "A09-dark-muted",
+      "status": "PASS",
+      "evidence": {
+        "foreground": "#9aa0ac",
+        "background": "#1a1d24",
+        "ratio": 6.42,
+        "required": 4.5
+      }
+    },
+    {
+      "id": "A10-light-muted",
+      "status": "PASS",
+      "evidence": {
+        "foreground": "#626873",
+        "background": "#ffffff",
+        "ratio": 5.6,
+        "required": 4.5
+      }
+    }
+  ],
+  "browsers": [
+    {
+      "name": "Chrome",
+      "version": "155.0.8059.84",
+      "scope": "primary suite; desktop hardware; mobile viewport/touch emulation"
+    },
+    {
+      "name": "WebKit",
+      "version": "26.6",
+      "scope": "desktop engine; mobile viewport emulation only"
+    }
+  ],
+  "live": {
+    "status": "UNVERIFIED",
+    "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at https://ahsanfirdaus1.github.io/watermark-v1/\nCall log:\n\u001b[2m  - navigating to \"https://ahsanfirdaus1.github.io/watermark-v1/\", waiting until \"load\"\u001b[22m\n"
+  },
+  "network": [
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "blob:LOCAL/3a3519f9-3962-46d0-bac0-b7cdc2827967",
+      "type": "image",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/",
+      "type": "document",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/css/styles.css",
+      "type": "stylesheet",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/lib/jszip.min.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/state.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/imageLoader.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/renderer.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/dragController.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/controlsUI.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/batch.js",
+      "type": "script",
+      "hasPostData": false
+    },
+    {
+      "method": "GET",
+      "url": "LOCAL/js/main.js",
+      "type": "script",
+      "hasPostData": false
+    }
+  ],
+  "console": [
+    "Failed to load resource: net::ERR_FILE_NOT_FOUND",
+    "Failed to load image corrupt.png Event",
+    "Zip generation failed, falling back to individual downloads. Error: SYNTHETIC_ZIP_FAILURE\n    at JSZip.generateAsync (eval at evaluate (:368:30), <anonymous>:1:164)\n    at Object.downloadAll (http://watermark.test/js/batch.js:79:35)\n    at async eval (eval at evaluate (:368:30), <anonymous>:1:260)\n    at async <anonymous>:394:30"
+  ],
+  "localTransport": "Playwright route.fulfill serves unchanged local bytes at http://watermark.test; OS sandbox denied localhost networking. Not a live HTTP server or hosting verification.",
+  "downloadTransport": "Native download.saveAs was canceled by environment. Test intercepts blob download anchor clicks, reads actual generated blob bytes, and writes those bytes under evidence. Native OS/browser save UI remains UNVERIFIED; no claim of real mobile saving.",
+  "sourceHashes": {
+    "index.html": "b3e1b81fa0d67fb46cbe0f0b796a86e4b0d5b2695b28c50b7c0f887c788499bd",
+    "css/styles.css": "d415d94cc698b37135a24a2cb2634ad2e5c33ecc085034adafa67155702ceca8",
+    "js/batch.js": "bf968ddaf3705a0493170badfa4c3755d6beed59ff4ce3665a1a98842def6819",
+    "js/controlsUI.js": "9649fb4eb2cec0739a4b6752125bc52a74042fe73d9403b10391e50e9b9778fc",
+    "js/dragController.js": "eb137708492f0aa5a377c97c34fda57b7958f1142c87968eedb5faf0542d570b",
+    "js/imageLoader.js": "162bc308693f2ae21a5e408b90f58f06c381efb022cee9cc4d80bb2f0f9984fb",
+    "js/main.js": "cdc18280392343e16c5601309b3194457fddd1cda9dd1db847f8dd90c8a15dcc",
+    "js/renderer.js": "bb51de7f60176d7653ffc101d9c50067f57817bc6beab60f506e29801f50c244",
+    "js/state.js": "495e396c74caca8093c3458f279c32db4b8821c03f14cc32e8171ebed8fad15e",
+    "lib/jszip.min.js": "f12f367798e35ee2d9993dba6167fc61ddb52fb89880f5a99fbb606335188410"
+  },
+  "summary": {
+    "PASS": 28,
+    "FAIL": 15,
+    "OBSERVATION": 3,
+    "UNVERIFIED": 1
+  }
+}
