@@ -48,8 +48,8 @@ File utama:
 - `js/dragController.js` dan `js/controlsUI.js` — interaksi editor
 - `js/batch.js` — PNG dan ZIP
 - `js/main.js` — penghubung aplikasi
-- `compress.html`, `css/compress.css`, `js/compress.js`, `js/other.js` — halaman kompres (mode KTP / ID dan Gambar lain)
-- `tests/compress-smoke.cjs` — uji asap halaman kompres (Playwright dan Chrome)
+- `compress.html`, `css/compress.css`, `js/compress.js`, `js/other.js`: halaman kompres (mode KTP / ID dan Gambar lain)
+- `tests/compress-smoke.cjs`: uji asap halaman kompres (Playwright dan Chrome)
 
 ## Referensi
 
