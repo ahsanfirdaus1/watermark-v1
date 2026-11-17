@@ -113,6 +113,58 @@ const check = (name, ok, detail) => { results.push(ok); console.log((ok ? 'PASS 
     check('no horizontal overflow at ' + w, over <= 0, 'over=' + over);
     await page.click('#cmpClear');
   }
+  // 10. Mode "Gambar lain": batch, ZIP, WebP, per-image target, limits.
+  const JSZip = require(path.join(root, 'lib/jszip.min.js'));
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.click('#cmpModes [data-mode="other"]');
+  check('other mode shows its panel only', !(await page.$eval('#othPanel', e => e.hidden)) && (await page.$eval('#ktpPanel', e => e.hidden)));
+  const othDone = n => page.waitForFunction(count => {
+    const rows = document.querySelectorAll('#othList .oth-row');
+    return rows.length === count && [...rows].every(r => r.querySelector('a'));
+  }, n, { timeout: 60000 });
+  await page.setInputFiles('#othFile', [fx('landscape.jpg'), fx('portrait.png'), fx('small.webp')]); await othDone(3);
+  check('zip button ready for 3 images', !(await page.$eval('#othZip', e => e.hidden)) && !(await page.$eval('#othZip', e => e.disabled)));
+  check('summary shown', /3 (gambar|images)/.test(await page.textContent('#othSummary')), await page.textContent('#othSummary'));
+  let [dl] = await Promise.all([page.waitForEvent('download'), page.click('#othZip')]);
+  let zip = await JSZip.loadAsync(fs.readFileSync(await dl.path())), zn = Object.keys(zip.files);
+  check('zip holds 3 unique files', zn.length === 3 && new Set(zn).size === 3, zn.join(','));
+  // Same base name from two formats must not overwrite each other.
+  await page.click('#othClear');
+  await page.setInputFiles('#othFile', [fx('duplicate.jpg'), fx('duplicate.png')]); await othDone(2);
+  [dl] = await Promise.all([page.waitForEvent('download'), page.click('#othZip')]);
+  zip = await JSZip.loadAsync(fs.readFileSync(await dl.path())); zn = Object.keys(zip.files).sort();
+  check('duplicate names get a suffix', zn.length === 2 && zn[0] !== zn[1], zn.join(','));
+  // WebP output: real WebP, no EXIF chunk.
+  await page.selectOption('#othFormat', 'image/webp'); await othDone(2);
+  [dl] = await Promise.all([page.waitForEvent('download'), page.click('#othList .oth-row a')]);
+  let wb = fs.readFileSync(await dl.path());
+  check('webp output is WebP without EXIF', wb.slice(0, 4).toString() === 'RIFF' && wb.slice(8, 12).toString() === 'WEBP' && !wb.includes('EXIF'), wb.length + ' B');
+  // Per-image KB target on a noisy photo.
+  await page.selectOption('#othFormat', 'image/jpeg');
+  await page.click('#othClear');
+  await page.setInputFiles('#othFile', noisy); await othDone(1);
+  await page.fill('#othTarget', '150'); await page.press('#othTarget', 'Enter'); await page.dispatchEvent('#othTarget', 'change'); await othDone(1);
+  [dl] = await Promise.all([page.waitForEvent('download'), page.click('#othList .oth-row a')]);
+  wb = fs.readFileSync(await dl.path());
+  const missed = (await page.$$('#othList .is-warn')).length > 0;
+  check('150 KB target met or flagged', wb.length <= 150 * 1024 || missed, wb.length + ' B, flagged=' + missed);
+  // Limits: 10 images at most, 20 MiB per file.
+  await page.click('#othClear');
+  const eleven = Array.from({ length: 11 }, () => fx('portrait.png'));
+  await page.setInputFiles('#othFile', eleven); await othDone(10);
+  check('11th image refused', /Maksimal 10|Maximum 10/.test(await status()), await status());
+  await page.click('#othClear');
+  await page.setInputFiles('#othFile', { name: 'big.jpg', mimeType: 'image/jpeg', buffer: Buffer.alloc(21 * 1048576) }); await page.waitForTimeout(800);
+  check('21 MiB file refused', /20 MiB/.test(await status()), await status());
+  // Language and layout in this mode.
+  await page.selectOption('#languageSelect', 'en');
+  await page.setInputFiles('#othFile', [fx('landscape.jpg'), fx('portrait.png'), fx('small.webp')]); await othDone(3);
+  check('zip button translates', (await page.textContent('#othZip')) === 'Download ZIP');
+  for (const w of [320, 390, 1280]) {
+    await page.setViewportSize({ width: w, height: 800 });
+    const over = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    check('other mode: no horizontal overflow at ' + w, over <= 0, 'over=' + over);
+  }
   check('no console errors, CSP violations or network requests', problems.length === 0, problems.join(' || '));
   await browser.close();
   fs.rmSync(noisy, { force: true });

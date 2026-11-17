@@ -5,7 +5,7 @@
   const $ = id => document.getElementById(id);
 
   Object.assign(WM.messages.id, {
-    skipContent: 'Lewati ke konten', cmpTitle: 'Kompres foto KTP', cmpIntro: 'Kecilkan ukuran file sampai di bawah batas portal. Periksa keterbacaan tulisan sebelum mengunggah.',
+    skipContent: 'Lewati ke konten', cmpTitle: 'Kompres gambar', cmpIntro: 'Kecilkan ukuran file sampai di bawah batas portal. Periksa keterbacaan tulisan sebelum mengunggah.',
     cmpDropTitle: 'Pilih foto KTP, KK, atau paspor', cmpDropHelp: 'JPG, PNG, atau WebP. Maksimal 20 MiB.', cmpChoose: 'Pilih foto', cmpDropHint: 'atau tarik file ke sini',
     cmpTargetTitle: 'Target ukuran', cmpTargetHelp: 'Cek batas ukuran di portal tujuan, lalu pilih yang sama atau lebih kecil.', cmpCustomLabel: 'Target lain (KB)', cmpCustomBtn: 'Kecilkan ke target',
     cmpManualTitle: 'Atur manual', cmpQuality: 'Kualitas JPG', cmpMaxSide: 'Sisi terpanjang', cmpSideOriginal: 'Ukuran asli',
@@ -20,7 +20,7 @@
     cmpBadTarget: 'Isi target antara 20 dan 10.000 KB.', cmpFailed: 'Kompres gagal. Coba gambar lain atau sisi terpanjang yang lebih kecil.', cmpCleared: 'Gambar sudah dihapus dari halaman ini.'
   });
   Object.assign(WM.messages.en, {
-    skipContent: 'Skip to content', cmpTitle: 'Compress ID card photos', cmpIntro: 'Reduce the file size to fit a portal limit. Check that the text is still readable before you upload.',
+    skipContent: 'Skip to content', cmpTitle: 'Compress images', cmpIntro: 'Reduce the file size to fit a portal limit. Check that the text is still readable before you upload.',
     cmpDropTitle: 'Choose a photo of your ID card, family card, or passport', cmpDropHelp: 'JPG, PNG, or WebP. Up to 20 MiB.', cmpChoose: 'Choose photo', cmpDropHint: 'or drop a file here',
     cmpTargetTitle: 'Target size', cmpTargetHelp: 'Check the size limit on the portal you are uploading to, then pick the same or a smaller one.', cmpCustomLabel: 'Other target (KB)', cmpCustomBtn: 'Compress to target',
     cmpManualTitle: 'Manual settings', cmpQuality: 'JPG quality', cmpMaxSide: 'Longest side', cmpSideOriginal: 'Original size',
@@ -54,16 +54,17 @@
     renderMode(); renderStatus();
   }
 
-  function draw(img, side) {
+  function draw(img, side, opaque = true) {
     const k = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight));
     const c = document.createElement('canvas');
     c.width = Math.max(1, Math.round(img.naturalWidth * k)); c.height = Math.max(1, Math.round(img.naturalHeight * k));
-    const x = c.getContext('2d', { alpha: false });
-    x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+    const x = c.getContext('2d', { alpha: !opaque });
+    if (opaque) { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
     x.imageSmoothingQuality = 'high'; x.drawImage(img, 0, 0, c.width, c.height);
     return c;
   }
-  const jpeg = (c, q) => new Promise((ok, no) => c.toBlob(b => b ? ok(b) : no(new Error('encode')), 'image/jpeg', q));
+  const encode = (c, type, q) => new Promise((ok, no) => c.toBlob(b => b ? ok(b) : no(new Error('encode')), type, q));
+  const jpeg = (c, q) => encode(c, 'image/jpeg', q);
 
   // Largest quality (and, only if needed, the largest side) that fits targetBytes.
   async function fit(img, targetBytes, live) {
@@ -208,10 +209,16 @@
   $('languageSelect').addEventListener('change', e => { WM.state.locale = e.target.value === 'en' ? 'en' : 'id'; renderLang(); });
 
   // A file dropped anywhere opens it; without this the browser would navigate to the file.
-  const drop = $('cmpDrop');
-  ['dragenter', 'dragover'].forEach(t => document.addEventListener(t, e => { e.preventDefault(); drop.classList.add('drag-over'); }));
-  document.addEventListener('dragleave', e => { if (!e.relatedTarget) drop.classList.remove('drag-over'); });
-  document.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag-over'); open(e.dataTransfer && e.dataTransfer.files[0]); });
+  const drops = () => document.querySelectorAll('.cmp-drop');
+  ['dragenter', 'dragover'].forEach(t => document.addEventListener(t, e => { e.preventDefault(); drops().forEach(d => d.classList.add('drag-over')); }));
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) drops().forEach(d => d.classList.remove('drag-over')); });
+  document.addEventListener('drop', e => {
+    e.preventDefault(); document.querySelectorAll('.cmp-drop').forEach(d => d.classList.remove('drag-over'));
+    const files = e.dataTransfer && e.dataTransfer.files;
+    if (WM.cmp.mode === 'other') WM.cmp.addOther(files); else open(files && files[0]);
+  });
 
+  // Shared with js/other.js (the "Gambar lain" mode).
+  WM.cmp = { mode: 'ktp', draw, encode, size, fill, say, addOther() {} };
   renderLang();
 })();

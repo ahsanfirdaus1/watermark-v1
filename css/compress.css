@@ -239,3 +239,86 @@
     grid-template-columns: 1fr
   }
 }
+.cmp-panel {
+  display: grid;
+  gap: 16px;
+  align-content: start
+}
+.cmp-modes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 420px
+}
+.cmp-summary {
+  margin: 0;
+  font-size: .875rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums
+}
+.cmp-summary:empty {
+  display: none
+}
+.oth-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px
+}
+.oth-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 12px
+}
+.oth-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--surface)
+}
+.oth-info {
+  min-width: 0;
+  display: grid;
+  gap: 2px
+}
+.oth-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .875rem;
+  font-weight: 650
+}
+.oth-meta {
+  font-size: .75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums
+}
+.oth-meta.is-warn {
+  color: var(--danger);
+  font-weight: 600
+}
+.oth-row .btn {
+  min-height: 44px
+}
+@media (max-width: 480px) {
+  .oth-row {
+    grid-template-columns: 48px minmax(0, 1fr)
+  }
+  .oth-thumb {
+    width: 48px;
+    height: 48px
+  }
+  .oth-row .btn {
+    grid-column: 1 / -1
+  }
+}
+@media (min-width: 1100px) {
+  .cmp-page .app-footer {
+    padding-left: 24px
+  }
+}

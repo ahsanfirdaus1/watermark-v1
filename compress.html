@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<meta name="description" content="Kecilkan foto KTP, KK, atau paspor sampai di bawah batas ukuran portal. Gambar diproses di browser dan tidak diunggah oleh aplikasi.">
+<meta name="description" content="Kecilkan foto KTP sampai di bawah batas ukuran portal, atau kompres gambar biasa ke JPG atau WebP. Gambar diproses di browser dan tidak diunggah oleh aplikasi.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
 <meta name="theme-color" content="#000000">
-<title>Kompres foto KTP di perangkat</title>
+<title>Kompres gambar di perangkat</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f97316'/%3E%3Cstop offset='1' stop-color='%23ca8a04'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='url(%23g)'/%3E%3Ctext x='24' y='32' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='28' fill='black'%3EW%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/compress.css">
@@ -21,9 +21,11 @@
   <label class="language-control"><span data-i18n="languageLabel">Bahasa</span><select id="languageSelect" aria-label="Language / Bahasa"><option value="id">ID</option><option value="en">EN</option></select></label>
 </header>
 <main class="cmp-main" id="cmpMain" tabindex="-1">
-  <section class="cmp-intro"><h1 data-i18n="cmpTitle">Kompres foto KTP</h1><p class="hint-text" data-i18n="cmpIntro">Kecilkan ukuran file sampai di bawah batas portal. Periksa keterbacaan tulisan sebelum mengunggah.</p></section>
+  <section class="cmp-intro"><h1 data-i18n="cmpTitle">Kompres gambar</h1><p class="hint-text" id="cmpIntroText" data-i18n="cmpIntro">Kecilkan ukuran file sampai di bawah batas portal. Periksa keterbacaan tulisan sebelum mengunggah.</p></section>
+  <div class="segmented cmp-modes" role="group" aria-label="Mode" id="cmpModes"><button type="button" class="seg-btn" data-mode="ktp" aria-pressed="true" data-i18n="modeKtp">KTP / ID</button><button type="button" class="seg-btn" data-mode="other" aria-pressed="false" data-i18n="modeOther">Gambar lain</button></div>
   <p class="cmp-status" id="cmpStatus" role="status" aria-live="polite"></p>
 
+  <div class="cmp-panel" id="ktpPanel">
   <section class="cmp-drop" id="cmpDrop" aria-labelledby="cmpDropTitle">
     <h2 id="cmpDropTitle" data-i18n="cmpDropTitle">Pilih foto KTP, KK, atau paspor</h2>
     <p class="hint-text" data-i18n="cmpDropHelp">JPG, PNG, atau WebP. Maksimal 20 MiB.</p>
@@ -93,8 +95,41 @@
       <p class="cmp-tip"><strong data-i18n="cmpCheckTitle">Cek keterbacaan.</strong> <span data-i18n="cmpCheckBody">Pilih zoom 100% atau 200%, lalu geser ke NIK, nama, dan alamat. Pastikan hurufnya masih tajam sebelum mengunggah ke portal.</span></p>
     </section>
   </div>
+  </div>
+
+  <div class="cmp-panel" id="othPanel" hidden>
+    <section class="cmp-drop" id="othDrop" aria-labelledby="othDropTitle">
+      <h2 id="othDropTitle" data-i18n="othDropTitle">Pilih gambar untuk dikompres</h2>
+      <p class="hint-text" data-i18n="othDropHelp">Sampai 10 gambar JPG, PNG, atau WebP. Maksimal 20 MiB per gambar dan 80 MiB total.</p>
+      <button type="button" class="btn btn-primary" id="othChoose" data-i18n="othChoose">Pilih gambar</button>
+      <p class="hint-text" data-i18n="cmpDropHint">atau tarik file ke sini</p>
+      <input type="file" id="othFile" accept="image/png,image/jpeg,image/webp" multiple hidden>
+    </section>
+
+    <div class="cmp-work" id="othWork" hidden>
+      <div class="cmp-side">
+        <section class="cmp-card" aria-labelledby="othSettingsTitle">
+          <h2 id="othSettingsTitle" data-i18n="othSettings">Pengaturan</h2>
+          <div class="control-group"><label class="field-label" for="othFormat" data-i18n="othFormat">Format hasil</label><select id="othFormat"><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></div>
+          <div class="control-group range-group"><label class="field-label" for="othQuality"><span data-i18n="othQuality">Kualitas</span><output class="value-badge" id="othQualityVal">80%</output></label><input type="range" id="othQuality" min="30" max="100" value="80"></div>
+          <div class="control-group"><label class="field-label" for="othSide" data-i18n="cmpMaxSide">Sisi terpanjang</label><select id="othSide"><option value="0" data-i18n="cmpSideOriginal">Ukuran asli</option><option value="2560">2560 px</option><option value="2000" selected>2000 px</option><option value="1600">1600 px</option><option value="1280">1280 px</option><option value="1024">1024 px</option><option value="800">800 px</option></select></div>
+          <div class="control-group"><label class="field-label" for="othTarget" data-i18n="othTarget">Target ukuran per gambar (KB)</label><input type="number" id="othTarget" min="20" max="10000" step="10" inputmode="numeric"><p class="hint-text" data-i18n="othTargetHelp">Opsional. Kosongkan untuk memakai kualitas di atas apa adanya.</p></div>
+        </section>
+        <section class="cmp-card cmp-actions" aria-label="Unduh / Download">
+          <button type="button" class="btn btn-primary" id="othZip" hidden disabled data-i18n="othZip">Unduh ZIP</button>
+          <button type="button" class="btn btn-secondary" id="othAdd" data-i18n="othAdd">Tambah gambar</button>
+          <button type="button" class="btn btn-secondary" id="othClear" data-i18n="othClear">Hapus semua gambar</button>
+          <p class="privacy-note"><span aria-hidden="true">●</span> <span data-i18n="othPrivacy">Hasil dibuat ulang lewat canvas, jadi metadata kamera seperti lokasi GPS tidak ikut tersimpan.</span></p>
+        </section>
+      </div>
+      <section class="cmp-card cmp-result" aria-label="Hasil / Results">
+        <p class="cmp-summary" id="othSummary"></p>
+        <ul class="oth-list" id="othList"></ul>
+      </section>
+    </div>
+  </div>
 </main>
 <footer class="app-footer"><p data-i18n="hostNote">GitHub Pages mencatat alamat IP pengunjung untuk keamanan situs. Gambar tetap diproses oleh browser di perangkatmu.</p></footer>
-<script src="js/state.js"></script><script src="js/imageLoader.js"></script><script src="js/compress.js"></script>
+<script src="lib/jszip.min.js"></script><script src="js/state.js"></script><script src="js/imageLoader.js"></script><script src="js/compress.js"></script><script src="js/other.js"></script>
 </body>
 </html>
