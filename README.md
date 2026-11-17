@@ -47,3 +47,7 @@ File utama:
 - [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
 - [Canvas `toBlob()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
 - [JSZip](https://stuk.github.io/jszip/)
+
+## Deploy
+
+Situs statis di GitHub Pages. Tidak ada build: perubahan yang di-push ke `main` dilayani Pages. Pengaturan sumber Pages (branch dan folder) perlu dicek di Settings > Pages repo.

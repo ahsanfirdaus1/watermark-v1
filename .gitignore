@@ -9,3 +9,8 @@ desktop.ini
 
 # Local dev-server launch config (used only by the Claude Code sandbox to preview locally)
 .claude/
+
+# Secrets
+.env
+.env.*
+!.env.example
