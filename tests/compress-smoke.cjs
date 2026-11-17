@@ -3,7 +3,7 @@
 const path = require('path'), fs = require('fs'), os = require('os');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const root = path.resolve(__dirname, '..');
-const fx = f => path.join(root, 'docs/audit-2026-10-19/evidence/fixtures', f);
+const fx = f => path.join(__dirname, 'fixtures', f);
 const url = 'file:///' + path.join(root, 'compress.html').replace(/\\/g, '/');
 const results = [];
 const check = (name, ok, detail) => { results.push(ok); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail ? ' | ' + detail : '')); };

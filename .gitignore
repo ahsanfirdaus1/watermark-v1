@@ -14,3 +14,7 @@ desktop.ini
 .env
 .env.*
 !.env.example
+
+# Internal docs, PRD and audit evidence stay on the owner's machine (repo is public)
+PRD/
+docs/

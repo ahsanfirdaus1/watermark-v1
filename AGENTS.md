@@ -13,7 +13,7 @@ Repo publik. Jangan commit rahasia, token, dokumen identitas asli, foto pribadi,
 ## Commands
 - Install: tidak ada
 - Dev: buka `index.html` di browser, atau sajikan folder sebagai situs statis
-- Test: `tests/compress-smoke.cjs` untuk halaman kompres. Editor watermark belum punya test suite. Harness audit ada di `docs/audit-2026-10-19/` (Node + Playwright + Python/Pillow, lihat README di sana)
+- Test: `tests/compress-smoke.cjs` untuk halaman kompres. Editor watermark belum punya test suite. Harness audit ada di `docs/audit-2026-10-19/` (hanya lokal, di-gitignore).
 - Build/deploy: tidak ada build. Deploy = push ke `main`, GitHub Pages melayani. Push dan deploy butuh persetujuan pemilik repo.
 
 ## Peta file
@@ -27,13 +27,14 @@ Repo publik. Jangan commit rahasia, token, dokumen identitas asli, foto pribadi,
 - `js/main.js`: penghubung
 - `compress.html`, `css/compress.css`, `js/compress.js` (mode KTP / ID, plus `WM.cmp` yang dipakai bersama), `js/other.js` (mode Gambar lain, batch dan ZIP; JSZip dari `lib/`): Memakai `js/state.js` (i18n) dan `WM.readImageHeader` / `WM.loadImage` dari `js/imageLoader.js`
 - `tests/compress-smoke.cjs`: uji asap kompres. Jalankan `PLAYWRIGHT_MODULE=<path playwright> node tests/compress-smoke.cjs` (butuh Chrome)
-- `PRD/`: PRD asli (docx, pdf), jangan diedit
-- `docs/audit-2026-10-19/`: audit, spesifikasi implementasi, prototype redesign, bukti uji
+- `PRD/`: PRD asli (docx, pdf), hanya lokal (di-gitignore), jangan diedit
+- `docs/`: audit, spesifikasi implementasi, prototype redesign, bukti uji. Hanya lokal (di-gitignore)
+- `tests/fixtures/`: gambar uji sintetis untuk `tests/compress-smoke.cjs`
 
 ## Notes / decisions
 - Batas: maks 10 gambar, 20 MiB per gambar, 80 MiB total, 24 MP dan 8.192 px per sisi, logo 8 MiB dan 4 MP, hasil PNG 64 MiB per pekerjaan.
 - Jangan menambah permintaan jaringan, analitik, atau penyimpanan lokal: itu melanggar klaim privasi di README.
-- Audit 2026-10-19 menemukan 15 FAIL dari 47 pemeriksaan. Perbaikan belum diterapkan; acuannya `docs/audit-2026-10-19/IMPLEMENTATION-SPEC.md`. Preferensi terbaru (bilingual ID/EN, pilihan kualitas ekspor, Android kelas menengah, batch 1-10) menggantikan PRD Juli 2026 bila berbeda.
+- Audit 2026-10-19 menemukan 15 FAIL dari 47 pemeriksaan. Perbaikan belum diterapkan; acuannya `docs/audit-2026-10-19/IMPLEMENTATION-SPEC.md` (hanya lokal). Preferensi terbaru (bilingual ID/EN, pilihan kualitas ekspor, Android kelas menengah, batch 1-10) menggantikan PRD Juli 2026 bila berbeda.
 - Status live GitHub Pages belum terverifikasi saat audit.
 - Tema (sejak Nov 2026): dark saja. Hitam `#000`, putih, aksen oranye `#f97316`, gradient `#f97316` ke `#ca8a04` hanya untuk brand mark, ikon empty state, dan tombol utama. Teks di atas gradient wajib hitam (putih hanya 2,8:1). Semua warna lewat token di `:root` pada `css/styles.css`.
 - Compressor: dua mode di `compress.html`. KTP / ID: target KB, satu file, lantai kualitas 50% dan sisi 1024 px. Gambar lain: JPG/WebP, kualitas, target KB opsional (lantai 30%), batch 10 + ZIP. PDF belum masuk cakupan. Angka lantai KTP belum diuji dengan foto KTP asli. Mode Gambar lain tidak punya perbandingan sebelum/sesudah dan zoom; itu hanya di mode KTP. Sumber awal: prototipe HTML yang tidak disimpan di repo.
