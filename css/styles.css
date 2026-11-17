@@ -1,37 +1,23 @@
 :root {
-  color-scheme:light dark;
-  --bg:#f3f5f2;
-  --surface:#fff;
-  --raised:#f7f9f7;
-  --ink:#172c27;
-  --muted:#51665e;
-  --line:#cbd6ce;
-  --field:#7b8c81;
-  --accent:#146954;
-  --focus:#753dc4;
-  --danger:#8e2824;
+  color-scheme:dark;
+  --bg:#000;
+  --surface:#0d0d0d;
+  --raised:#181818;
+  --ink:#fff;
+  --muted:#b8b8b8;
+  --line:#2e2e2e;
+  --field:#7a7a7a;
+  --accent:#f97316;
+  --accent-grad:linear-gradient(135deg,#f97316,#ca8a04);
+  --on-accent:#000;
+  --focus:#fff;
+  --danger:#ff9a8f;
   --radius:18px;
   --touch:48px;
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:16px;
   color:var(--ink);
   background:var(--bg)
-}
-
-@media(prefers-color-scheme:dark) {
-  :root {
-  --bg:#0f1915;
-  --surface:#172820;
-  --raised:#20332a;
-  --ink:#eef5ef;
-  --muted:#b5c7bc;
-  --line:#334b3d;
-  --field:#829b8d;
-  --accent:#146954;
-  --focus:#d7bcff;
-  --danger:#f2a09a
-}
-
 }
 
 * {
@@ -110,8 +96,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   width:36px;
   height:38px;
   border-radius:11px;
-  background:var(--accent);
-  color:#fff;
+  background:var(--accent-grad);
+  color:var(--on-accent);
   font-weight:800;
   font-size:20px;
   transform:rotate(-4deg)
@@ -201,12 +187,12 @@ select,input[type=text],input[type=number] {
   font-size:.8125rem
 }
 .btn-primary {
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent)
+  background:var(--accent-grad);
+  color:var(--on-accent);
+  border-color:transparent
 }
 .btn-primary:hover:not(:disabled) {
-  background:#105541
+  filter:brightness(1.12)
 }
 .btn-secondary {
   background:var(--surface);
@@ -402,9 +388,9 @@ select,input[type=text],input[type=number] {
   height:44px;
   display:grid;
   place-items:center;
-  background:var(--accent);
+  background:var(--accent-grad);
   border-radius:12px;
-  color:white;
+  color:var(--on-accent);
   font-weight:800;
   font-size:1.25rem;
   transform:rotate(-4deg);
@@ -481,8 +467,7 @@ select,input[type=text],input[type=number] {
 .seg-btn[aria-pressed=true] {
   border-color:var(--accent);
   background:var(--surface);
-  color:var(--accent);
-  box-shadow:0 1px 4px #142d2520
+  color:var(--accent)
 }
 .field-label {
   display:flex;
@@ -632,7 +617,6 @@ select,input[type=text],input[type=number] {
   padding:10px 16px max(10px,env(safe-area-inset-bottom));
   background:color-mix(in srgb,var(--surface) 96%,transparent);
   border-top:1px solid var(--line);
-  box-shadow:0 -6px 24px #10231b10;
   backdrop-filter:blur(10px)
 }
 .export-controls {

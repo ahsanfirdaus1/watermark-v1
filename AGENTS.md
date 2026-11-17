@@ -33,3 +33,5 @@ Follows the workspace rules in `../AGENTS.md` (read them; Codex does not auto-lo
 - Jangan menambah permintaan jaringan, analitik, atau penyimpanan lokal: itu melanggar klaim privasi di README.
 - Audit 2026-10-19 menemukan 15 FAIL dari 47 pemeriksaan. Perbaikan belum diterapkan; acuannya `docs/audit-2026-10-19/IMPLEMENTATION-SPEC.md`. Preferensi terbaru (bilingual ID/EN, pilihan kualitas ekspor, Android kelas menengah, batch 1-10) menggantikan PRD Juli 2026 bila berbeda.
 - Status live GitHub Pages belum terverifikasi saat audit.
+- Tema (sejak Nov 2026): dark saja. Hitam `#000`, putih, aksen oranye `#f97316`, gradient `#f97316` ke `#ca8a04` hanya untuk brand mark, ikon empty state, dan tombol utama. Teks di atas gradient wajib hitam (putih hanya 2,8:1). Semua warna lewat token di `:root` pada `css/styles.css`.
+- Rencana fitur compressor: halaman `compress.html` dengan dua mode, "KTP / ID" (target KB, satu file, lantai kualitas) dan "Gambar lain" (slider kualitas, JPG/WebP, batch 10 + ZIP). PDF belum masuk cakupan. Sumber awal: file HTML buatan Gemini di Downloads (tidak ada di repo).
