@@ -165,6 +165,30 @@ const check = (name, ok, detail) => { results.push(ok); console.log((ok ? 'PASS 
     const over = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     check('other mode: no horizontal overflow at ' + w, over <= 0, 'over=' + over);
   }
+  // 11. Navigation between the two pages must work from a plain file:// open too (a "./" link lists the folder there).
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(url);
+  await page.click('.site-nav a:nth-child(1)'); await page.waitForLoadState();
+  check('nav: Kompres -> Watermark lands on index.html', page.url().endsWith('/index.html'), page.url());
+  check('nav: Watermark page marks itself current', (await page.getAttribute('.site-nav a:nth-child(1)', 'aria-current')) === 'page');
+  await page.click('.site-nav a:nth-child(2)'); await page.waitForLoadState();
+  check('nav: Watermark -> Kompres lands on compress.html', page.url().endsWith('/compress.html'), page.url());
+  await page.click('a.brand'); await page.waitForLoadState();
+  check('brand link from compress lands on index.html', page.url().endsWith('/index.html'), page.url());
+  await page.click('a.brand'); await page.waitForLoadState();
+  check('brand link from index stays on index.html', page.url().endsWith('/index.html'), page.url());
+  // 12. The watermark editor still works end to end (theme, header and shared-script changes touched it).
+  await page.setInputFiles('#fileInput', fx('landscape.jpg'));
+  await page.waitForFunction(() => document.getElementById('previewCanvas') && !document.getElementById('previewCanvas').hidden && document.getElementById('previewCanvas').width > 1, null, { timeout: 30000 });
+  check('watermark: preview canvas draws', true);
+  await page.waitForFunction(() => !document.getElementById('downloadBtn').disabled, null, { timeout: 30000 });
+  await page.click('#downloadBtn');
+  await page.waitForFunction(() => !document.getElementById('saveLink').hidden, null, { timeout: 60000 });
+  const [wm] = await Promise.all([page.waitForEvent('download'), page.click('#saveLink')]);
+  const png = fs.readFileSync(await wm.path());
+  check('watermark: exports a PNG', png.slice(1, 4).toString() === 'PNG' && png.length > 500, png.length + ' B');
+  await page.selectOption('#languageSelect', 'en');
+  check('watermark: nav translates', (await page.textContent('.site-nav a:nth-child(2)')) === 'Compress');
   check('no console errors, CSP violations or network requests', problems.length === 0, problems.join(' || '));
   await browser.close();
   fs.rmSync(noisy, { force: true });
