@@ -13,6 +13,10 @@ Editor watermark statis untuk foto dan hasil pindai dokumen. File dipilih dan di
 
 Semua tombol dapat digunakan dengan keyboard. Bahasa Indonesia menjadi pilihan awal; pilihan Indonesia/Inggris hanya berlaku selama halaman terbuka.
 
+## Kompres foto KTP
+
+Halaman `compress.html` mengecilkan satu foto KTP, KK, atau paspor (JPG, PNG, WebP, maksimal 20 MiB) sampai di bawah target ukuran: 200 KB, 300 KB, 500 KB, 1 MB, atau angka sendiri. Hasilnya JPG dengan latar putih. Ada pengaturan manual untuk kualitas dan sisi terpanjang, perbandingan sebelum dan sesudah, serta zoom 100% dan 200% untuk memeriksa NIK, nama, dan alamat. Kualitas tidak turun di bawah 50% dan sisi terpanjang tidak di bawah 1024 px pada mode otomatis; bila target tidak tercapai, halaman menampilkan peringatan dan hasil terkecil yang aman. Batas ukuran file dan dimensi sama dengan editor watermark.
+
 ## Batas perangkat
 
 - Maksimal 20 MiB per gambar dan 80 MiB total; paling banyak 10 gambar.
@@ -40,6 +44,8 @@ File utama:
 - `js/dragController.js` dan `js/controlsUI.js` — interaksi editor
 - `js/batch.js` — PNG dan ZIP
 - `js/main.js` — penghubung aplikasi
+- `compress.html`, `css/compress.css`, `js/compress.js` — halaman kompres foto KTP
+- `tests/compress-smoke.cjs` — uji asap halaman kompres (Playwright dan Chrome)
 
 ## Referensi
 

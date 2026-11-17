@@ -80,6 +80,32 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   grid-column:2;
   grid-row:1
 }
+.site-nav {
+  grid-column:1/-1;
+  grid-row:3;
+  display:flex;
+  gap:4px
+}
+.site-nav a {
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 12px;
+  color:var(--muted);
+  font-size:.875rem;
+  font-weight:650;
+  text-decoration:none;
+  border-bottom:2px solid transparent;
+  transition:color .12s,border-color .12s
+}
+.site-nav a:hover {
+  color:var(--ink);
+  border-bottom-color:var(--line)
+}
+.site-nav a[aria-current=page] {
+  color:var(--ink);
+  border-bottom-color:var(--accent)
+}
 .brand {
   display:flex;
   align-items:center;
@@ -720,7 +746,7 @@ body {
 @media(min-width:760px) {
   .app-header {
   padding:16px 24px;
-  grid-template-columns:auto minmax(0,1fr) auto;
+  grid-template-columns:auto auto minmax(0,1fr) auto;
   grid-template-rows:auto;
   min-height:84px
 }
@@ -728,12 +754,17 @@ body {
   grid-column:1;
   grid-row:1
 }
-.tagline {
+.site-nav {
   grid-column:2;
+  grid-row:1;
+  margin-left:12px
+}
+.tagline {
+  grid-column:3;
   grid-row:1
 }
 .language-control {
-  grid-column:3;
+  grid-column:4;
   grid-row:1
 }
 .app-main {

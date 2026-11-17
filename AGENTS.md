@@ -13,7 +13,7 @@ Follows the workspace rules in `../AGENTS.md` (read them; Codex does not auto-lo
 ## Commands
 - Install: tidak ada
 - Dev: buka `index.html` di browser, atau sajikan folder sebagai situs statis
-- Test: tidak ada test suite aplikasi. Harness audit ada di `docs/audit-2026-10-19/` (Node + Playwright + Python/Pillow, lihat README di sana)
+- Test: `tests/compress-smoke.cjs` untuk halaman kompres. Editor watermark belum punya test suite. Harness audit ada di `docs/audit-2026-10-19/` (Node + Playwright + Python/Pillow, lihat README di sana)
 - Build/deploy: tidak ada build. Deploy = push ke `main`, GitHub Pages melayani. Push butuh persetujuan Ahsan.
 
 ## Peta file
@@ -25,6 +25,8 @@ Follows the workspace rules in `../AGENTS.md` (read them; Codex does not auto-lo
 - `js/dragController.js`, `js/controlsUI.js`: interaksi editor
 - `js/batch.js`: ekspor PNG dan ZIP
 - `js/main.js`: penghubung
+- `compress.html`, `css/compress.css`, `js/compress.js`: halaman kompres (mode KTP / ID). Memakai `js/state.js` (i18n) dan `WM.readImageHeader` / `WM.loadImage` dari `js/imageLoader.js`
+- `tests/compress-smoke.cjs`: uji asap kompres. Jalankan `PLAYWRIGHT_MODULE=<path playwright> node tests/compress-smoke.cjs` (butuh Chrome)
 - `PRD/`: PRD asli (docx, pdf), jangan diedit
 - `docs/audit-2026-10-19/`: audit, spesifikasi implementasi, prototype redesign, bukti uji
 
@@ -34,4 +36,5 @@ Follows the workspace rules in `../AGENTS.md` (read them; Codex does not auto-lo
 - Audit 2026-10-19 menemukan 15 FAIL dari 47 pemeriksaan. Perbaikan belum diterapkan; acuannya `docs/audit-2026-10-19/IMPLEMENTATION-SPEC.md`. Preferensi terbaru (bilingual ID/EN, pilihan kualitas ekspor, Android kelas menengah, batch 1-10) menggantikan PRD Juli 2026 bila berbeda.
 - Status live GitHub Pages belum terverifikasi saat audit.
 - Tema (sejak Nov 2026): dark saja. Hitam `#000`, putih, aksen oranye `#f97316`, gradient `#f97316` ke `#ca8a04` hanya untuk brand mark, ikon empty state, dan tombol utama. Teks di atas gradient wajib hitam (putih hanya 2,8:1). Semua warna lewat token di `:root` pada `css/styles.css`.
-- Rencana fitur compressor: halaman `compress.html` dengan dua mode, "KTP / ID" (target KB, satu file, lantai kualitas) dan "Gambar lain" (slider kualitas, JPG/WebP, batch 10 + ZIP). PDF belum masuk cakupan. Sumber awal: file HTML buatan Gemini di Downloads (tidak ada di repo).
+- Compressor: mode "KTP / ID" sudah jadi di `compress.html` (target KB, satu file, lantai kualitas 50% dan sisi 1024 px). Mode "Gambar lain" (slider kualitas, JPG/WebP, batch 10 + ZIP) belum dibuat; pengalih mode baru dipasang bersama mode itu supaya tidak ada kontrol mati. PDF belum masuk cakupan. Angka lantai belum diuji dengan KTP asli. Sumber awal: HTML buatan Gemini di Downloads (tidak ada di repo).
+- CSP halaman: tanpa style atau script inline. Nilai dinamis lewat `element.style.setProperty` (CSSOM), bukan atribut `style`.

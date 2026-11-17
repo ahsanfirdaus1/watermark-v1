@@ -63,6 +63,9 @@ window.WM = window.WM || {};
     return canvas;
   }
 
+  WM.readImageHeader = readHeader;
+  WM.loadImage = loadImage;
+
   WM.initImageLoader = function ({ onChange }) {
     const state = WM.state;
     const picker = document.getElementById('fileInput');

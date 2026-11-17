@@ -1,0 +1,241 @@
+.cmp-page {
+  padding-bottom: 0
+}
+.cmp-main {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 6px 16px 20px;
+  display: grid;
+  gap: 16px;
+  align-content: start
+}
+.cmp-main:focus {
+  outline: none
+}
+.cmp-intro h1 {
+  font-size: 1.25rem;
+  margin: 0 0 4px;
+  letter-spacing: -.03em
+}
+.cmp-intro p {
+  max-width: 62ch
+}
+.cmp-status {
+  margin: 0;
+  font-size: .8125rem;
+  color: var(--muted)
+}
+.cmp-status:empty {
+  display: none
+}
+.cmp-status.is-warn {
+  color: var(--danger);
+  font-weight: 600
+}
+.cmp-drop {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 44px 20px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--field);
+  border-radius: var(--radius)
+}
+.cmp-drop.drag-over {
+  border-color: var(--accent);
+  background: var(--raised)
+}
+.cmp-drop h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  letter-spacing: -.03em
+}
+.cmp-drop .hint-text {
+  max-width: 46ch
+}
+.cmp-work {
+  display: grid;
+  gap: 16px
+}
+.cmp-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0
+}
+.cmp-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius)
+}
+.cmp-card h2 {
+  margin: 0;
+  font-size: .9375rem;
+  letter-spacing: -.02em
+}
+.cmp-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px
+}
+.cmp-presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px
+}
+.cmp-presets .btn[aria-pressed=true] {
+  border-color: var(--accent);
+  color: var(--accent)
+}
+.cmp-custom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px
+}
+.cmp-main .btn:active:not(:disabled) {
+  transform: translateY(1px)
+}
+.cmp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0
+}
+.cmp-stat {
+  min-width: 0;
+  padding: 10px 12px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 12px
+}
+.cmp-stat dt {
+  font-size: .6875rem;
+  font-weight: 650;
+  color: var(--muted)
+}
+.cmp-stat dd {
+  margin: 2px 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere
+}
+.cmp-stat .hl,
+.cmp-stat dd.hl {
+  color: var(--accent)
+}
+.cmp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px
+}
+.cmp-toolbar .segmented {
+  flex: 1 1 260px
+}
+.cmp-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px
+}
+.cmp-stage.is-single {
+  grid-template-columns: 1fr
+}
+.cmp-pane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+.cmp-pane-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--muted)
+}
+.cmp-pane-head output {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  text-align: right
+}
+.cmp-view {
+  height: 340px;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 12px
+}
+.cmp-view img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 338px;
+  object-fit: contain
+}
+.cmp-view.zoom-1,
+.cmp-view.zoom-2 {
+  display: block
+}
+.cmp-view.zoom-1 img,
+.cmp-view.zoom-2 img {
+  max-width: none;
+  max-height: none;
+  width: calc(var(--nw) * 1px);
+  height: auto
+}
+.cmp-view.zoom-2 img {
+  width: calc(var(--nw) * 2px)
+}
+.cmp-tip {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: .8125rem;
+  color: var(--muted);
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 12px
+}
+.cmp-tip strong {
+  color: var(--ink)
+}
+.cmp-actions .privacy-note {
+  margin: 0
+}
+@media (min-width: 900px) {
+  .cmp-main {
+    padding: 8px 24px 24px
+  }
+  .cmp-work {
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    align-items: start
+  }
+}
+@media (max-width: 899px) {
+  /* One column: target, then the preview it changes, then manual settings and download. */
+  .cmp-side {
+    display: contents
+  }
+  .cmp-side > :nth-child(1) { order: 1 }
+  .cmp-result { order: 2 }
+  .cmp-side > :nth-child(2) { order: 3 }
+  .cmp-side > :nth-child(3) { order: 4 }
+}
+@media (max-width: 640px) {
+  .cmp-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+  .cmp-stage {
+    grid-template-columns: 1fr
+  }
+}
