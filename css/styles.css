@@ -41,7 +41,7 @@ button:disabled {
   cursor:default;
   opacity:.52
 }
-button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,[role=button]:focus-visible {
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,[role=button]:focus-visible,[tabindex="0"]:focus-visible {
   outline:3px solid var(--focus);
   outline-offset:3px
 }
@@ -109,6 +109,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .brand {
   display:flex;
   align-items:center;
+  min-height:44px;
   gap:10px;
   color:var(--ink);
   text-decoration:none;
