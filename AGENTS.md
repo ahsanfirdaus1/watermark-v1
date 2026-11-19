@@ -39,3 +39,8 @@ Repo publik. Jangan commit rahasia, token, dokumen identitas asli, foto pribadi,
 - Tema (sejak Nov 2026): dark saja. Hitam `#000`, putih, aksen oranye `#f97316`, gradient `#f97316` ke `#ca8a04` hanya untuk brand mark, ikon empty state, dan tombol utama. Teks di atas gradient wajib hitam (putih hanya 2,8:1). Semua warna lewat token di `:root` pada `css/styles.css`.
 - Compressor: dua mode di `compress.html`. KTP / ID: target KB, satu file, lantai kualitas 50% dan sisi 1024 px. Gambar lain: JPG/WebP, kualitas, target KB opsional (lantai 30%), batch 10 + ZIP. PDF belum masuk cakupan. Angka lantai KTP belum diuji dengan foto KTP asli. Mode Gambar lain tidak punya perbandingan sebelum/sesudah dan zoom; itu hanya di mode KTP. Sumber awal: prototipe HTML yang tidak disimpan di repo.
 - CSP halaman: tanpa style atau script inline. Nilai dinamis lewat `element.style.setProperty` (CSSOM), bukan atribut `style`.
+
+## Pre-commit security gate
+- Before every `git commit`, run `/security-audit` (the `security-audit` skill) on the staged diff (`git diff --cached`). Do this every time, without waiting to be asked. `git add` itself needs no audit.
+- Only run `git commit` if the audit finds nothing blocking. Report any finding (secrets, tokens, `.env`, ad account credentials, unsafe code) to Ahsan first.
+- In the reply, say what the audit covered and what was not checked.
